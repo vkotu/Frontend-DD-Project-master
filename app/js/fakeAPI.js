@@ -24,20 +24,29 @@ module.exports = function (req, res, next) {
     { name: 'Engineering', id: 3, users: [], messages: [] },
     { name: 'HR', id: 4, users: [], messages: [] },
     { name: 'Operations', id: 5, users: [], messages: [] },
-    { name: 'Operations', id: 7, users: [], messages: [] },
-    { name: 'Special Ops', id: 8, users: [], messages: [] }
+    { name: 'Special Ops', id: 6, users: [], messages: [] }
     ]
 
 
     // Utility functions
     const findRoom = (roomId) => {
-    const room = database.find((room) => {
-        return room.id === parseInt(roomId)
-    })
-    if (room === undefined){
-        return {error: `a room with id ${roomId} does not exist`}
+        const room = database.find((room) => {
+            return room.id === parseInt(roomId)
+        })
+        if (room === undefined){
+            return {error: `a room with id ${roomId} does not exist`}
+        }
+        return room
     }
-    return room
+
+    const findRoomByName = (name) => {
+        const room = database.find((room) => {
+            return room.name === name
+        })
+        if (room === undefined){
+            return {error: `a room with name ${name} does not exist`}
+        }
+        return room
     }
 
     const findRoomIndex = (roomId) => {
@@ -66,10 +75,6 @@ module.exports = function (req, res, next) {
 
     // API Routes
     router.get('/rooms', function(req, res) {
-        console.log("*****************");
-        console.log("*****************");
-        console.log("*****************");
-        console.log("*****************");
         const rooms = database.map((room) => {
         return {name: room.name, id: room.id}
         })
@@ -77,15 +82,30 @@ module.exports = function (req, res, next) {
         res.json(rooms)
     })
 
+    router.post('/rooms/create', function(req, res) {
+        var room = findRoomByName(req.body.name)
+        if (!room.error) {
+            console.log('Response:',room)
+            res.json({error: 'room name already exists'})
+        }else if (!req.body.name) {
+            console.log('Response:',{error: 'request missing name'})
+            res.json({error: 'request missing name'})
+        }
+        var newRoom = {name: req.body.name, id: database.length, users: [], messages: [] }
+        database.push(newRoom);
+        console.log('Response:',newRoom);
+        res.json(newRoom);
+    })
+
     router.get('/rooms/:roomId', function(req, res) {
-    var room = findRoom(req.params.roomId)
-    if (room.error) {
-        console.log('Response:',room)
-        res.json(room)
-    } else {
-        console.log('Response:',{name: room.name, id: room.id, users: room.users})
-        res.json({name: room.name, id: room.id, users: room.users})
-    }
+        var room = findRoom(req.params.roomId)
+        if (room.error) {
+            console.log('Response:',room)
+            res.json(room)
+        } else {
+            console.log('Response:',{name: room.name, id: room.id, users: room.users})
+            res.json({name: room.name, id: room.id, users: room.users})
+        }
     })
 
     router.route('/rooms/:roomId/messages')
@@ -112,7 +132,6 @@ module.exports = function (req, res, next) {
         const reaction = req.body.reaction || null
         const messageObj = { name: req.body.name, message: req.body.message, id: shortid.generate(), reaction }
         room.messages.push(messageObj)
-        console.log("message added ***********");
         console.log(room);
         console.log('Response:',{message: 'OK!'})
         res.json(messageObj)

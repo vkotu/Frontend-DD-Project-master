@@ -3,6 +3,7 @@ var socket;
 var userName = "";
 var availableRooms;
 var prevRoom;
+var showCreateRoom = false;
 
 function init() {
     handleNewUser();
@@ -96,7 +97,6 @@ function handleRoomClick (event) {
 }
 
 function getMessageSucces(data) {
-    console.log(data);
     _.forEach(data, function (info) {
         if (info.name == userName) {
             $('#chatContainer').append($('<div class="self-message">')
@@ -117,7 +117,6 @@ function getRoomDataSuccess (data) {
         alert("No data found");
         return;
     }
-    console.log(data);
     var users = data.users || [];
     $('#room-name').text(data.name || '');
 }
@@ -136,7 +135,7 @@ function establishSocketIoOnUserConn () {
         if (!name) {
             return;
         }
-        console.log('you are connected (' + name +')');
+        console.info('you are connected (' + name +')');
     });
 } 
 
@@ -155,7 +154,7 @@ function establishSocketIoConnForRoom (roomId) {
         });
     }
     if (prevRoom != roomId) {
-        console.log("emiting join room : " + socket.id);
+        console.info("emiting join room (" + roomId + ") for: " + userName);
         socket.emit('join_room', {
             room: roomId,
             name: userName
@@ -164,12 +163,22 @@ function establishSocketIoConnForRoom (roomId) {
     }
     // Listen for new user join and updated list of names
     socket.on('user_joined', function (data) {
-        console.log(data);
+        console.info("User " + data.newUserJoined+ " Joined");
+        // Add message to let others know a user just joined
+        $('#chatContainer').append($('<div class="user-info">')
+            .html('<span>' + data.newUserJoined + ' joined the room!!</span>'));
+        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
+        // Update the usernames list in chat header
         updateList(data);
     });
     // Listen for user left and update list
     socket.on('user_left', function (data) {
-        console.log(data);
+        console.info("User " + data.userLeft+ " Joined");
+        // Add a small message to let others know a user just joined
+        $('#chatContainer').append($('<div class="user-info">')
+            .html('<span>' + data.userLeft + ' left the room!!</span>'));
+        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
+        //Update the usernames list in chat header
         updateList(data);
     });
 
@@ -185,6 +194,7 @@ function establishSocketIoConnForRoom (roomId) {
     });
 
     function updateList (data) {
+        //Add the current first
         var usersList = "<span>" + userName + "</span>";
         var activeUsersInRoom = data.activeUsersInRoom[roomId];
         _.remove(activeUsersInRoom, function (v) {
@@ -236,6 +246,57 @@ function failure(err) {
     alert('Some thing went wrong');
     console.error("Some thing went wrong: ");
     console.log(err);
+}
+
+function toggleCreateRoom() {
+    $('#roomName').val("");
+    if (!showCreateRoom) {
+        $('#creatRoomForm').css({
+            display: 'flex'
+        });
+        $('#toggleCreateRoom').css({
+            display: 'none'
+        });
+        $("#rooms-list").scrollTop($("#rooms-list")[0].scrollHeight);
+        showCreateRoom = true;
+    } else {
+        $('#creatRoomForm').css({
+            display: 'none'
+        });
+        $('#toggleCreateRoom').css({
+            display: 'flex'
+        });
+        showCreateRoom = false;
+    }
+}
+
+function createRoom () {
+    var name = $.trim($('#roomName').val());
+    if (!name) {
+        alert("Room name is empty");
+        return;
+    }
+    if (_.find(availableRooms, function (o) { return o.name === name})) {
+        alert('Room name already exist');
+        return;
+    }
+    apiService.createNewRoom(name)
+        .done(function (data) {
+            console.log(data);
+            availableRooms.push({ name: data.name, id: data.id});
+            $('#rooms-list').append(
+                $('<div id="room_' + data.id +'">').text(data.name)
+            );
+            $('#rooms-list #room_' + data.id).click(handleRoomClick);
+            toggleCreateRoom();
+            $("#rooms-list").scrollTop($("#rooms-list")[0].scrollHeight);
+        })
+        .fail(function (err) {
+            alert("Something went wrong");
+            console.error(err);
+            toggleCreateRoom();
+        });
+        
 }
 
 init();

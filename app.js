@@ -25,6 +25,4 @@ http_serv.listen(port, function () {
     console.info("Sever started on port: '" + port +"'");
 });
 
-// var rooms = http.g
-
 io.on('connection', handleIo);

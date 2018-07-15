@@ -1,17 +1,18 @@
 $inp-button-border : #D8D8D8;
 $red-bg: #FF1940;
+$info-text: #696969;
 
 html, body{
-    height:100%;
-    font-size: 16px;
     font-family: sans-serif;
+    font-size: 16px;
+    height:100%;
     margin: 0;
     padding: 0;
 }
 
 .flex-center {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
 }
 
@@ -27,8 +28,8 @@ html, body{
 
 .input-box {
     border-radius: 5px;
-    font-size: 16px;
     border: solid 1px $inp-button-border;
+    font-size: 16px;
 }
 
 .user-name-container {
@@ -66,9 +67,10 @@ html, body{
 
     .left-panel {
         background: $red-bg;
-        height: 100%;
         flex: 0 0 20%;
+        height: 100%;
         padding: 20px 0 0 25px;
+        overflow: scroll;
 
         .name-header {
             color: white;
@@ -88,8 +90,8 @@ html, body{
             margin-top: 20px;
 
             div {
-                padding: 15px;
                 color: white;
+                padding: 15px;
 
                 &:hover {
                     background: #c51431;
@@ -99,6 +101,51 @@ html, body{
 
             .selected {
                 background: #800D20;
+            }
+        }
+        .create-room {
+            @extend .flex-col;
+            width: 60%;
+            margin: 10px 0 0 15px;
+
+            * {
+                margin-bottom: 10px;
+            }
+
+            #creatRoomForm {
+                @extend .flex-col;
+
+                display: none;
+
+                input, button {
+                    height: 25px;
+                    border-radius: 5px;
+                    border: solid 1px $inp-button-border;
+                    font-size: 14px;
+                }
+                input {
+                    padding-left: 15px;
+                }
+                button {
+                    width: 50%;
+                    margin: 5px;
+                    color: $red-bg;
+                }
+
+                div {
+                    @extend .flex-row;
+                    button:first-of-type {
+                        margin-left: 0px;
+                    } 
+                    button:last-of-type {
+                        margin-right: 0px;
+                    }
+                }
+            }
+
+            span {
+                color: white;
+                cursor: pointer;
             }
         }
     }
@@ -111,82 +158,88 @@ html, body{
 
         .chat-header {
             @extend .flex-center;
-            flex-direction: column;
+
             align-self: center;
+            color: $info-text;
+            flex-direction: column;
             height: 15%;
-            color: #696969;
 
             div:first-of-type {
-                margin-bottom: 10px;
                 font-size: 24px;
                 font-weight: 500;
+                margin-bottom: 10px;
             }
 
             div:last-of-type {
-
                 span {
                     color: $red-bg;
                 }
-
                 font-size: 16px;
                 font-weight: 300;
             }
         }
         .chat-container {   
-            height: 75%;
             background-color: #EFF1F2;
-            overflow: auto;
             display: none;
-            padding: 20px;
             flex-direction: column;
+            height: 75%;
+            overflow: auto;
+            padding: 20px;
 
 
             div {
                 @extend .flex-col;
-                width: 50%;
                 flex-shrink: 0;
+                width: 50%;
             }
-
             .user-name {
-                font-size: 14px;
                 color: grey;
+                font-size: 14px;
                 margin: 5px 0 10px 5px;
             }
-
             .msg-box {
-                border: solid 1px #D8D8D8;
                 border-radius: 20px;
+                border: solid 1px #D8D8D8;
                 padding: 10px;
             }
 
             .self-message {
-                align-self: flex-end;
                 align-content: flex-end;
+                align-self: flex-end;
     
                 span:first-of-type {
                     @extend .msg-box;
+                    align-self: flex-end;
                     background: $red-bg;
                     color: white;
-                    align-self: flex-end;
                 }
             }
     
             .incoming-message {
-                align-self: flex-start;
                 align-content: flex-start;
+                align-self: flex-start;
     
                 span:first-of-type {
                     @extend .msg-box;
-                    background: #FFFFFF;
                     align-self: flex-start;
+                    background: #FFFFFF;
                 }
+            }
+
+            .user-info {
+                align-self: center;
+                color: $info-text;
+                font-size: 13px;
+                font-weight: 100;
+                padding: 5px;
+                text-align: center;
             }
         }
         .chat-form {
             @extend .flex-center;
+            display: none;
             height: 10%;
             padding-left: 20px;
-            display: none;
 
             #chatForm {
                 @extend .flex-center;
@@ -196,21 +249,21 @@ html, body{
             input {
                 @extend .input-box;
                 height: 35px;
-                width: 85%;
                 padding-left: 20px;
+                width: 85%;
             }
 
             button {
-                width: 10%;
                 background-color: #FFFFFF;
                 border: none;
                 color: #4A90E2;
-                text-align: center;
-                text-decoration: none;
                 display: inline-block;
                 font-size: 18px;
                 font-weight: 600;
                 padding: 0;
+                text-align: center;
+                text-decoration: none;
+                width: 10%;
             }
         }
     }
@@ -219,6 +272,6 @@ html, body{
 .enable-info {
    @extend .flex-col;
    @extend .flex-center;
-   height: 85%;
-   color: #696969
+   color: $info-text;
+   height: 75%;
 }

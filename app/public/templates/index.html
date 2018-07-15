@@ -20,6 +20,16 @@
                 <div id="rooms-list" class="rooms-list">
                     
                 </div>
+                <div class="create-room">
+                    <div id="creatRoomForm">
+                        <input type="text" id="roomName" value="" placeholder="Room name..."/>
+                        <div>
+                            <button onclick="createRoom()">Create</button>
+                            <button onclick="toggleCreateRoom()">Cancel</button>
+                        </div>
+                    </div>
+                    <span id="toggleCreateRoom" onclick="toggleCreateRoom()">+ Create room</span>
+                </div>
             </div>
             <div class="right-panel">
                 <div class="chat-header">

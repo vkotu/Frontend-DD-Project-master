@@ -48,11 +48,23 @@ var apiService = (function apiService() {
         return p;
     }
 
+    function createNewRoom (name) {
+        if (!name) {
+            console.error("Room name is missing");
+            return;
+        }
+        var p = $.post(baseURL + "/rooms/create", {
+            name: name
+        });
+        return p;
+    }
+
     return {
         getRooms: getRooms,
         getRoomById: getRoomById,
         saveMessage: saveMessage,
-        getMessagesByRoomId: getMessagesByRoomId
+        getMessagesByRoomId: getMessagesByRoomId,
+        createNewRoom: createNewRoom
     }
 
 })();
