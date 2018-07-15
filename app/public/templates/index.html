@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="./app/public/styles/css/main.css">
+</head>
+<body>
+    <div class="user-name-container">
+        <form id="nameForm" action="">
+                <input id="userName" name= "userName" type="text" placeholder="Type your username..." value=""/>
+                <button>Join the DoorDash Chat!</button>
+        </form>
+    </div>
+    <div class="chat-rooms-container">
+            <div class="left-panel">
+                <div class="name-header">
+                    <div id="name"></div>
+                    <div id="status"></div>
+                </div>
+
+                <div id="rooms-list" class="rooms-list">
+                    
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="chat-header">
+                    <div id="room-name"></div>
+                    <div id="users-list"></div>
+                </div>
+                <div class="enable-info">
+                        Select any room to enable chat
+                </div>
+                <div id="chatContainer" class="chat-container">
+                    
+                </div>
+                <div class="chat-form">
+                    <form id="chatForm" action="">
+                        <input id="inputMsg" placeholder="Type a message..."/>
+                        <button>Send</button>
+                    </form>
+                </div>
+            </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./app/public/js/apiService.js"></script>
+    <script src="./app/public/js/client.js"></script>
+</body>

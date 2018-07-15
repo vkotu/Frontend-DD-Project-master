@@ -1,24 +1,39 @@
 {
-  "name": "frontend-project",
+  "name": "chatrealtime",
   "version": "1.0.0",
-  "description": "The Frontend take home project for DoorDash",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "serve ./public",
-    "api-server": "node server.js"
-  },
-  "engines": {
-    "node": ">=7.0.0"
-  },
-  "author": "Ryan Gonzalez",
-  "license": "ISC",
-  "devDependencies": {
-    "serve": "^3.1.0",
-    "express": "~4.0.0",
-    "body-parser": "~1.0.1"
-  },
+  "description": "simple chat application using socket.io",
+  "main": "Y",
   "dependencies": {
-    "shortid": "^2.2.8"
-  }
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "node-sass": "^4.9.2",
+    "node-static": "^0.7.10",
+    "nodemon": "^1.18.1",
+    "path": "^0.12.7",
+    "shortid": "^2.2.12",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "sass-compile": "node-sass --include-path sass app/public/styles/scss/ -o app/public/styles/css",
+    "scss-watch": "node-sass --watch app/public/styles/scss -o app/public/styles/css",
+    "api-server": "nodemon server.js",
+    "start": "npm run sass-compile & nodemon app.js & npm run scss-watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vkotu/realTimeChat.git"
+  },
+  "keywords": [
+    "chat",
+    "socket.io"
+  ],
+  "author": "kotu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vkotu/realTimeChat/issues"
+  },
+  "homepage": "https://github.com/vkotu/realTimeChat#readme"
 }

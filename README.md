@@ -1,12 +1,7 @@
-# DoorDash Frontend Interview Project
-* TLDR: *Build a chat app with real APIs*
-* Time: *3hr - 6hrs*
-* Allowed tools & frameworks: *anything*
-* Show us what you got!
 
 ## Howdy! 👋  
 
-This is the frontend interview project for DoorDash! We're going to ask you to build something with whatever tools you want, whatever language you want, or whatever.
+!We're going to ask you to build something with whatever tools you want, whatever language you want, or whatever.
 
 If you want to keep it vanilla, that's fine—this should take you 2/3 hours with jQuery, plain ol' HTML and CSS. If you want to use other tools, (like Angular, React, Vue, Ember) that's fine too—*just make sure you have enough documentation for us to be able to build and run the app*. We just want you to build something that's maintainable, testable, and that you're proud of.
 
@@ -61,7 +56,7 @@ We're going to review your code to see how you work and how you make tradeoffs�
   * [`qknudsen`](https://github.com/qknudsen) (GitHub), [`quintin.knudsen`](https://gitlab.com/quintin.knudsen) (Gitlab)
   * [`jessyes`](https://github.com/jessyes) (GitHub)
   * [`ifsred`](https://github.com/ifsred) (GitHub/GitLab)
-4. Send an email back to recruiting to ensure that we have a link/access to the repo.
+4. Send an email back to ensure that we have a link/access to the repo.
 5. We'll review and get back to you soon!
 
 ## Extra notes

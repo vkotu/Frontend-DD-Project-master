@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DoorDash Frontend Project</title>
+    <link rel="stylesheet" href="./app/styles/main.css">
+</head>
+<body>
+    <div class="header">
+        <div class="h-text">
+            <img src="./images/bg3.jpeg" class="h-icon" alt="...">
+            <span> Welcome to simple chat application</span>
+        </div>
+        <div>
+            <ul class="nav">
+                <li><a href="#">Create private chat room...</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="userName">
+            <form id="nameForm" action="">
+                <input id="name" type="text" placeholder="Please provide a name to enter chat..." value=""/>
+                <button>Enter</button>
+            </form>
+        </div>
+        <div class="chat">
+                <div id="msg-container">
+                    <ul id="messages"></ul>
+                </div>
+                <div>
+                    <form id="chatForm" action="">
+                        <input id="m" autocomplete="off" /><button>Send</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./app/js/client.js"></script>
+</body>
+</html>
+

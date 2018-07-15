@@ -1,0 +1,223 @@
+$inp-button-border : #D8D8D8;
+$red-bg: #FF1940;
+
+html, body{
+    height:100%;
+    font-size: 16px;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box {
+    border-radius: 5px;
+    font-size: 16px;
+    border: solid 1px $inp-button-border;
+}
+
+.user-name-container {
+    @extend .flex-center;
+    height: 100%;
+
+    #nameForm {
+        display: flex;
+        flex-direction: column;
+        width: 25%; 
+
+        * {
+            @extend .input-box;
+            height: 40px;
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        button {
+            background: $red-bg;
+            color: white;
+        }
+    }
+}
+
+.chat-rooms-container {
+    @extend .flex-row;
+
+    display: none;
+    height: 100%;
+    width: 100%;
+
+    .left-panel {
+        background: $red-bg;
+        height: 100%;
+        flex: 0 0 20%;
+        padding: 20px 0 0 25px;
+
+        .name-header {
+            color: white;
+            font-size: 30px;
+            font-weight: 500;
+
+            div:last-of-type {
+                font-size: 12px;
+                font-weight: 100;
+                margin-left: 1px;
+            }
+        }
+
+        .rooms-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+
+            div {
+                padding: 15px;
+                color: white;
+
+                &:hover {
+                    background: #c51431;
+                    cursor: pointer;
+                }
+            }
+
+            .selected {
+                background: #800D20;
+            }
+        }
+    }
+
+    .right-panel {
+        @extend .flex-col;
+
+        height: 100%;
+        width: 80%;
+
+        .chat-header {
+            @extend .flex-center;
+            flex-direction: column;
+            align-self: center;
+            height: 15%;
+            color: #696969;
+
+            div:first-of-type {
+                margin-bottom: 10px;
+                font-size: 24px;
+                font-weight: 500;
+            }
+
+            div:last-of-type {
+
+                span {
+                    color: $red-bg;
+                }
+
+                font-size: 16px;
+                font-weight: 300;
+            }
+        }
+        .chat-container {   
+            height: 75%;
+            background-color: #EFF1F2;
+            overflow: auto;
+            display: none;
+            padding: 20px;
+            flex-direction: column;
+
+
+            div {
+                @extend .flex-col;
+                width: 50%;
+            }
+
+            .user-name {
+                font-size: 14px;
+                color: grey;
+                margin: 5px 0 10px 5px;
+            }
+
+            .msg-box {
+                border: solid 1px #D8D8D8;
+                border-radius: 20px;
+                padding: 10px;
+            }
+
+            .self-message {
+                align-self: flex-end;
+                align-content: flex-end;
+    
+                span:first-of-type {
+                    @extend .msg-box;
+                    background: $red-bg;
+                    color: white;
+                    align-self: flex-end;
+                }
+            }
+    
+            .incoming-message {
+                align-self: flex-start;
+                align-content: flex-start;
+    
+                span:first-of-type {
+                    @extend .msg-box;
+                    background: #FFFFFF;
+                    align-self: flex-start;
+                }
+            }
+        }
+        .chat-form {
+            @extend .flex-center;
+            height: 10%;
+            padding-left: 20px;
+            display: none;
+
+            #chatForm {
+                @extend .flex-center;
+                width: 100%;
+            }
+
+            input {
+                @extend .input-box;
+                height: 35px;
+                width: 85%;
+                padding-left: 20px;
+            }
+
+            button {
+                width: 10%;
+                background-color: #FFFFFF;
+                border: none;
+                color: #4A90E2;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 18px;
+                font-weight: 600;
+                padding: 0;
+            }
+        }
+    }
+}
+
+.enable-info {
+   @extend .flex-col;
+   @extend .flex-center;
+   height: 85%;
+   color: #696969
+}
