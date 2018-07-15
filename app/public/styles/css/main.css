@@ -92,7 +92,8 @@ html, body {
       padding: 20px;
       flex-direction: column; }
       .chat-rooms-container .right-panel .chat-container div {
-        width: 50%; }
+        width: 50%;
+        flex-shrink: 0; }
       .chat-rooms-container .right-panel .chat-container .user-name {
         font-size: 14px;
         color: grey;

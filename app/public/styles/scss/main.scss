@@ -144,6 +144,7 @@ html, body{
             div {
                 @extend .flex-col;
                 width: 50%;
+                flex-shrink: 0;
             }
 
             .user-name {

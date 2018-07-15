@@ -101,14 +101,14 @@ function getMessageSucces(data) {
         if (info.name == userName) {
             $('#chatContainer').append($('<div class="self-message">')
             .html('<span>' + info.message + '</span>'));
-            $("#chatContainerr").scrollTop($("#chatContainer")[0].scrollHeight);
+            $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
         } else {
             $('#chatContainer').append($('<div class="incoming-message">')
             .html('<span>' + info.message + '</span>')
             .append($('<span class="user-name">').text(info.name)));
             // $('.incoming-message').after($('<div>').text("testing"));
-            $("#chatContainerr").scrollTop($("#chatContainer")[0].scrollHeight);
         }
+        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
     });
 }
 
@@ -181,7 +181,7 @@ function establishSocketIoConnForRoom (roomId) {
             .html('<span>' + data.msg + '</span>')
             .append($('<span class="user-name">').text(data.userName)));
         // $('.incoming-message').after($('<div>').text("testing"));
-        $("#chatContainerr").scrollTop($("#chatContainer")[0].scrollHeight);
+        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
     });
 
     function updateList (data) {
@@ -216,7 +216,7 @@ function handleChatSubmit () {
         $('#chatContainer').append($('<div class="self-message">')
             .html('<span>' + $('#inputMsg').val() + '</span>'));
         $('#inputMsg').val('');
-        $("#chatContainerr").scrollTop($("#chatContainer")[0].scrollHeight);
+        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
         return false;
       });
 }
