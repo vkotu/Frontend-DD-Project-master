@@ -27,7 +27,7 @@ var apiService = (function apiService() {
         var roomId = info.roomId.split("_")[1];
         var p = $.post(baseURL + "/rooms/" + roomId + "/messages", {
             name: info.userName,
-            message: info.msg || '',
+            message: info.message || '',
             reaction: info.reaction 
         });
         p.done(function (data) {

@@ -19,6 +19,18 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
             }
             console.info('you are connected (' + name +')');
         });
+
+        listenForNewRoom();
+    }
+
+    function listenForNewRoom () {
+        socket.on('new_room', function (room) {
+            // Update the rooms
+            // console.log("some one created a new room");
+            // console.log(room);
+            AVAILABLE_ROOMS.push(room);
+            domUpdatesHandler.addRoomToList(room, HANDLE_ROOM_CLICK);
+        });
     }
 
     function socketJoinRoom (roomId) {
@@ -33,6 +45,8 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
 
         // Remove all listeners in case when user changing room to avoid multiple listener registrations.
         socket.removeAllListeners();
+
+        listenForNewRoom();
     
         // First leave if user is coming from previous room.
         if (PREV_ROOM !== roomId && PREV_ROOM !== undefined) {
@@ -53,36 +67,28 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
 
         // Listen for new user join and updated list of names
         socket.on('user_joined', function (data) {
-            console.info("User " + data.newUserJoined+ " Joined");
+            console.info("User " + data.user+ " Joined");
             // Add message to let others know a user just joined
-            $('#chatContainer').append($('<div class="user-info">')
-                .html('<span>' + data.newUserJoined + ' joined the room!!</span>'));
-            $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
+            domUpdatesHandler.addMessage('user-info', data);
             // Update the USER_NAMEs list in chat header
             updateList(data);
         });
 
         // Listen for user left and update list
         socket.on('user_left', function (data) {
-            console.info("User " + data.userLeft+ " Joined");
+            console.info("User " + data.user+ " Joined");
             // Add a small message to let others know a user just joined
-            $('#chatContainer').append($('<div class="user-info">')
-                .html('<span>' + data.userLeft + ' left the room!!</span>'));
-            $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
+            domUpdatesHandler.addMessage('user-info', data);
             //Update the USER_NAMEs list in chat header
             updateList(data);
         });
 
         // On user submits message emit and let server broadcast to other clients connected to the room
         socket.on('chat_message', function (data) {
-            if(data && !$.trim(data.msg)) {
+            if(data && !$.trim(data.message)) {
                 return;
             }
-            $('#chatContainer').append($('<div class="incoming-message">')
-                .html('<span>' + data.msg + '</span>')
-                .append($('<span class="user-name">').text(data.userName)));
-            // $('.incoming-message').after($('<div>').text("testing"));
-            $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
+            domUpdatesHandler.addMessage('incoming-message', data);
         });
 
         // Update the list of user names who are currently active in the room.
@@ -104,10 +110,15 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
         socket.emit('chat_message', info);
     }
 
+    function emitNewRoom(name, room) {
+        socket.emit(name, room);
+    }
+
     return {
         socketJoinRoom: socketJoinRoom,
         emitChatMsg: emitChatMsg,
-        initSocketioOnUserEntry: initSocketioOnUserEntry
+        initSocketioOnUserEntry: initSocketioOnUserEntry,
+        emitNewRoom: emitNewRoom
     };
     
 })();

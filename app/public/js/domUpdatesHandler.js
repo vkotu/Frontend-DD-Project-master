@@ -47,37 +47,43 @@ var domUpdatesHandler = (function domUpdateHandler () {
         });
     }
 
-    function addRoomToList(room, handleRoomClick) {
+    function addRoomToList(room) {
         var roomListElm = $("#rooms-list");
 
         roomListElm.append(
             $('<div id="room_' + room.id +'">').text(room.name)
         );
         // Add click handler
-        $('#rooms-list #room_' + room.id).click(handleRoomClick);
+        $('#rooms-list #room_' + room.id).click(HANDLE_ROOM_CLICK);
 
         roomListElm.scrollTop($("#rooms-list")[0].scrollHeight);
     }
 
-    function updateRoomsList (rooms, handleRoomClick) {
-        if(!rooms.length) {
+    function updateRoomsList () {
+        if(!AVAILABLE_ROOMS.length) {
             return;
         }
         
-        rooms.forEach(room => {
-            addRoomToList(room, handleRoomClick);
+        AVAILABLE_ROOMS.forEach(room => {
+            addRoomToList(room);
         });
     }
 
     function addMessage (className, info) {
         // Append new message to chat
         var chatContainer = $('#chatContainer');
+        var dataToAppend;
+        if (className === 'user-info') {
+            dataToAppend = info.user + (info.join ? ' joined the room!' : ' left the room!');
+        } else {
+            dataToAppend = info.message;
+        }
 
         chatContainer.append($('<div class="'+ className + '">')
-            .html('<span>' + info.message + '</span>'));
+            .html('<span>' + dataToAppend + '</span>'));
         // Append name of the user who sent the new incoming message.
         if (className === 'incoming-message') {
-            chatContainer.append($('<span class="user-name">').text(info.name))
+            chatContainer.append($('<span class="user-name">').text(info.userName))
         }    
         // Scroll to the latest message    
         chatContainer.scrollTop($("#chatContainer")[0].scrollHeight);

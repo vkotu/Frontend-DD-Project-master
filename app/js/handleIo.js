@@ -11,8 +11,30 @@ function handleIo(socket) {
     console.log('New client connected: ' + socket.id);
     // Store CLIENTS info based on the unique socket id.
     if (CLIENTS[socket.id] === undefined) {
-        CLIENTS[socket.id] = {};
+        CLIENTS[socket.id] = {
+            id: socket.id
+        };
     }
+
+    socket.on('new_room', function (room) {
+        console.log("New room created so broadcast");
+        console.log(room);
+        console.log(CLIENTS);
+        console.log(socket.id);
+        var otherClients = _.filter(CLIENTS, function (client) {
+            return client.id !== socket.id;
+        });
+        socket.broadcast.emit('new_room', room);
+        // _.forEach(otherClients, function (client) {
+        //     if (client.inRoom) {
+        //         console.log("emiting to client "+ client.id + " who is in room " + client.inRoom);
+        //         socket.to(client.inRoom).emit('new_room', room);
+        //     } else {
+        //         console.log("emiting to client "+ client.id);
+        //         socket.broadcast.to(client.id).emit('new_room', room);
+        //     }
+        // });
+    });
 
     // On client send join_room 
     socket.on('join_room', function(info) {
@@ -26,15 +48,16 @@ function handleIo(socket) {
         // join the room
         socket.join(curRoom);
         // Let others know new user joined this room.
-        socket.to(info.room).emit('user_joined', {
-            newUserJoined: info.name,
+        console.log("emit to room :  " + info.room);
+        var dataObj = {
+            user: info.name,
+            join: true,
+            left: false,
             activeUsersInRoom: ACTIVE_USERS_IN_ROOM
-        });
+        };
+        socket.to(info.room).emit('user_joined', dataObj);
         // Send the updated users list to the own client.
-        socket.emit('user_joined', {
-            newUserJoined: info.name,
-            activeUsersInRoom: ACTIVE_USERS_IN_ROOM
-        });
+        socket.emit('user_joined', dataObj);
         // Update the room for client.
         CLIENTS[socket.id].inRoom = curRoom;
     });
@@ -54,7 +77,9 @@ function handleIo(socket) {
         });
         // Let others know a user left this room
         socket.to(curRoom).emit('user_left', {
-            userLeft: info.name,
+            user: info.name,
+            join: false,
+            left: true,
             activeUsersInRoom: ACTIVE_USERS_IN_ROOM
         });
     });
@@ -62,14 +87,17 @@ function handleIo(socket) {
     // On client disconnected.
     socket.on('disconnect', function () {
         console.log(socket.id + " disconnected");
-        // Let others know a user left/disconnected this room
+        // Update clients obj on user disconnected
         var room = _.get(CLIENTS[socket.id], 'inRoom');
         if (room) {
             _.remove(ACTIVE_USERS_IN_ROOM[room], function (v) {
                 return v === _.get(CLIENTS[socket.id], 'name');
             });
+            // Let other in room know user left.
             socket.to(room).emit('user_left', {
-                userLeft: _.get(CLIENTS[socket.id], 'name'),
+                user: _.get(CLIENTS[socket.id], 'name'),
+                left: true,
+                join: false,
                 activeUsersInRoom: ACTIVE_USERS_IN_ROOM
             });
         }

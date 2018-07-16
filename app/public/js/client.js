@@ -3,6 +3,7 @@ var USER_NAME = "";
 var AVAILABLE_ROOMS;
 var PREV_ROOM;
 var SHOW_CREATE_ROOM = false;
+var HANDLE_ROOM_CLICK = handleRoomClick;
 
 
 function init() {
@@ -37,7 +38,7 @@ function handleNewUser () {
                 // Welcome message to user before he selects any room for chat.
                 $('#room-name').text("Hello " + USER_NAME);
                 // Add the rooms to page.
-                domUpdatesHandler.updateRoomsList(data, handleRoomClick);
+                domUpdatesHandler.updateRoomsList();
             })
             .fail(failure);
         // Establish socket connection.
@@ -46,7 +47,7 @@ function handleNewUser () {
     });
 }
 
-function handleRoomClick (event) {
+function handleRoomClick () {
     var roomId = $(this).attr("id");
     // use clicked the room he is already in. Do not do anything.
     if (PREV_ROOM == roomId) {
@@ -107,7 +108,7 @@ function handleChatSubmit () {
             return false;
         }
         info = {
-            msg: msg,
+            message: msg,
             userName: USER_NAME,
             roomId: $('#rooms-list .selected').attr("id")
         }
@@ -116,7 +117,7 @@ function handleChatSubmit () {
         apiService.saveMessage(info);
 
         domUpdatesHandler.addMessage('self-message', {
-            message: $('#inputMsg').val()
+            message: msg
         });
         // Reset input 
         $('#inputMsg').val('');
@@ -156,7 +157,8 @@ function createRoom () {
             var room = { name: data.name, id: data.id} ;
             AVAILABLE_ROOMS.push(room);
 
-            domUpdatesHandler.addRoomToList(room, handleRoomClick)
+            domUpdatesHandler.addRoomToList(room, handleRoomClick);
+            SOCKET_IO_HANDLER.emitNewRoom('new_room', room);
             toggleCreateRoom();
         })
         .fail(function (err) {

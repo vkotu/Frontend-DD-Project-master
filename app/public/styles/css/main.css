@@ -59,7 +59,8 @@ html, body {
     .chat-rooms-container .left-panel .rooms-list {
       display: flex;
       flex-direction: column;
-      margin-top: 20px; }
+      margin-top: 20px;
+      overflow: scroll; }
       .chat-rooms-container .left-panel .rooms-list div {
         color: white;
         padding: 15px; }
@@ -74,6 +75,7 @@ html, body {
       .chat-rooms-container .left-panel .create-room * {
         margin-bottom: 10px; }
       .chat-rooms-container .left-panel .create-room #creatRoomForm {
+        overflow: scroll;
         display: none; }
         .chat-rooms-container .left-panel .create-room #creatRoomForm input, .chat-rooms-container .left-panel .create-room #creatRoomForm button {
           height: 25px;

@@ -88,6 +88,7 @@ html, body{
             display: flex;
             flex-direction: column;
             margin-top: 20px;
+            overflow: scroll;
 
             div {
                 color: white;
@@ -114,6 +115,7 @@ html, body{
 
             #creatRoomForm {
                 @extend .flex-col;
+                overflow: scroll;
 
                 display: none;
 
