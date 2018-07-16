@@ -8,7 +8,7 @@ Please email me kotu.js@gmail.com in case you do not see the link working. I wil
 
 ### 1. Installing minimum deps
 
-Please clone the repo git@github.com:vkotu/Frontend-DD-Project-master.git, go in to the directory the repo is cloned 
+Please clone the repo `git@github.com:vkotu/Frontend-DD-Project-master.git`, go in to the directory the repo is cloned 
 
 Make sure you have `node` installed, with a version greater than `7.0.0`. I highly recommend [`nvm`](https://github.com/creationix/nvm), or just installing the latest version of `node` with `brew install node` on macOS.
 
