@@ -54,7 +54,7 @@ var domUpdatesHandler = (function domUpdateHandler () {
             $('<div id="room_' + room.id +'">').text(room.name)
         );
         // Add click handler
-        $('#rooms-list #room_' + room.id).click(HANDLE_ROOM_CLICK);
+        $('#rooms-list #room_' + room.id).click(EVENT_HANDLERS.handleRoomClick);
 
         roomListElm.scrollTop($("#rooms-list")[0].scrollHeight);
     }

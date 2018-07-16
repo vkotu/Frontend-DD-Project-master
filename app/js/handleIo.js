@@ -113,10 +113,19 @@ function handleIo(socket) {
 
     // On new user login.
     socket.on('new_user', function(info) {
-        if (CLIENTS[socket.id]) {
-            CLIENTS[socket.id].name = info.name;
+        console.log("*****Clients****");
+        console.log(CLIENTS);
+        console.log("*****Clients****");
+        var sameNameFound = _.find(CLIENTS, function(c) { return c.name === info.name; });
+        if (sameNameFound) {
+            console.log("Emit duplicate name event");
+            socket.emit('duplicate_name', info.name);
+        } else {
+            if (CLIENTS[socket.id]) {
+                CLIENTS[socket.id].name = info.name;
+            }
+            socket.emit('new_user', info.name);
         }
-        socket.emit('new_user', info.name);
     });
 };
 

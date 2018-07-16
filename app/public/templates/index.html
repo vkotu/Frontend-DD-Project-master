@@ -11,6 +11,7 @@
         </form>
     </div>
     <div class="chat-rooms-container">
+            <!-- LEFT PANEL START -->
             <div class="left-panel">
                 <div class="name-header">
                     <div id="name"></div>
@@ -24,13 +25,15 @@
                     <div id="creatRoomForm">
                         <input type="text" id="roomName" value="" placeholder="Room name..."/>
                         <div>
-                            <button onclick="createRoom()">Create</button>
-                            <button onclick="toggleCreateRoom()">Cancel</button>
+                            <button id="createRoomBtn">Create</button>
+                            <button id="cancelCreateRoom">Cancel</button>
                         </div>
                     </div>
-                    <span id="toggleCreateRoom" onclick="toggleCreateRoom()">+ Create room</span>
+                    <span id="toggleCreateRoom">+ Create room</span>
                 </div>
             </div>
+            <!-- LEFT PANEL END -->
+            <!-- RIGHT PANEL START -->
             <div class="right-panel">
                 <div class="chat-header">
                     <div id="room-name"></div>
@@ -49,6 +52,7 @@
                     </form>
                 </div>
             </div>
+            <!-- RIGHT PANEL END -->
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>

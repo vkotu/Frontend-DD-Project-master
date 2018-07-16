@@ -11,13 +11,43 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
         socket.emit('new_user', {
             name: USER_NAME
         });
-        // Listen for ack from server on new user.
+        // Listen for ack from server on new user success.
+        // If all ok show the user chat container
         socket.on('new_user', function (name) {
             if (!name) {
                 console.error("Something went wrong while registering user to the socket");
                 return;
             }
             console.info('you are connected (' + name +')');
+            // Hide USER_NAME form and show chat contianer.
+            USER_NAME = name;
+            if (USER_NAME) { domUpdatesHandler.enableChatContainer(); }
+            // Update header in left panel with the user name.
+            $('.name-header #name').text(USER_NAME);
+            // Online status indicator.
+            domUpdatesHandler.setStatusInterval();
+            // Get the existing rooms information for left panel.
+            apiService.getRooms()
+                .done(function(data) {
+                    if (!data.length) {
+                        alert("No rooms found");
+                        return;
+                    }
+                    // Update the available rooms list.
+                    AVAILABLE_ROOMS = data;
+                    // Welcome message to user before he selects any room for chat.
+                    $('#room-name').text("Hello " + USER_NAME);
+                    // Add the rooms to page.
+                    domUpdatesHandler.updateRoomsList();
+                })
+                .fail(failure);
+        });
+
+        // Listen for ack from server on new user.
+        socket.on('duplicate_name', function (name) {
+            console.info("Another client connected with same name");
+            alert("Username (" + name + ") not available, please choose different name!");
+            return;
         });
 
         listenForNewRoom();
@@ -29,7 +59,7 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
             // console.log("some one created a new room");
             // console.log(room);
             AVAILABLE_ROOMS.push(room);
-            domUpdatesHandler.addRoomToList(room, HANDLE_ROOM_CLICK);
+            domUpdatesHandler.addRoomToList(room, EVENT_HANDLERS.handleRoomClick);
         });
     }
 
@@ -97,9 +127,9 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
             var usersList = "<span>" + USER_NAME + "</span>";
             var activeUsersInRoom = data.activeUsersInRoom[roomId];
             // To avoid duplicate name showing up self username
-            _.remove(activeUsersInRoom, function (v) {
-                    return v === USER_NAME;
-                });
+            var indexOfCurrentUser = _.indexOf(activeUsersInRoom, USER_NAME);
+            if (indexOfCurrentUser > -1) { _.pullAt(activeUsersInRoom, indexOfCurrentUser); }
+
             // Final user list to show in page
             usersList =  activeUsersInRoom.length > 0 ? usersList + ", " +  activeUsersInRoom.join(", ") : usersList;
             $('#users-list').html(usersList);
