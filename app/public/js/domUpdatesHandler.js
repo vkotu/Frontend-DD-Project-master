@@ -83,7 +83,7 @@ var domUpdatesHandler = (function domUpdateHandler () {
             .html('<span>' + dataToAppend + '</span>'));
         // Append name of the user who sent the new incoming message.
         if (className === 'incoming-message') {
-            chatContainer.append($('<span class="user-name">').text(info.userName))
+            chatContainer.append($('<span class="user-name">').text(info.userName || info.name));
         }    
         // Scroll to the latest message    
         chatContainer.scrollTop($("#chatContainer")[0].scrollHeight);
