@@ -1,90 +1,93 @@
 'use strict';
 var http = require('http');
 var _ = require('lodash');
-var clients = {};
-var activeUsersInRoom = {
+// List of clients currently connected.
+var CLIENTS = {};
+// Contains list of users currently active in a room.
+var ACTIVE_USERS_IN_ROOM = {
 };
 
 function handleIo(socket) {
     console.log('New client connected: ' + socket.id);
-
-    if (clients[socket.id] === undefined) {
-        clients[socket.id] = {};
+    // Store CLIENTS info based on the unique socket id.
+    if (CLIENTS[socket.id] === undefined) {
+        CLIENTS[socket.id] = {};
     }
 
+    // On client send join_room 
     socket.on('join_room', function(info) {
         var curRoom = info.room;
-        if (activeUsersInRoom[curRoom] !== undefined) {
-            activeUsersInRoom[curRoom].push(info.name)
+        // Contains list of users currently active in a room
+        if (ACTIVE_USERS_IN_ROOM[curRoom] !== undefined) {
+            ACTIVE_USERS_IN_ROOM[curRoom].push(info.name)
         } else {
-            activeUsersInRoom[curRoom] = [info.name];
+            ACTIVE_USERS_IN_ROOM[curRoom] = [info.name];
         }
+        // join the room
         socket.join(curRoom);
-        console.log(socket.id + " joined: " + info.room);
-        //Let others know new user joined this room
-        console.log("emiting user_joined : " + socket.id);
+        // Let others know new user joined this room.
         socket.to(info.room).emit('user_joined', {
             newUserJoined: info.name,
-            activeUsersInRoom: activeUsersInRoom
+            activeUsersInRoom: ACTIVE_USERS_IN_ROOM
         });
-        //Send the updated users list to the own client
+        // Send the updated users list to the own client.
         socket.emit('user_joined', {
             newUserJoined: info.name,
-            activeUsersInRoom: activeUsersInRoom
+            activeUsersInRoom: ACTIVE_USERS_IN_ROOM
         });
-        clients[socket.id].inRoom = curRoom;
+        // Update the room for client.
+        CLIENTS[socket.id].inRoom = curRoom;
     });
 
+    // On client request to leave room.
     socket.on("leave_room", function(info) {
-        console.log(socket.id + " leave  " + info.room );
         var curRoom = info.room;
-        if (clients[socket.id].inRoom == curRoom) {
-            clients[socket.id].inRoom = null;
+        // Reset room for client.
+        if (CLIENTS[socket.id].inRoom == curRoom) {
+            CLIENTS[socket.id].inRoom = null;
         }
+        // Leave room.
         socket.leave(curRoom);
-        _.remove(activeUsersInRoom[curRoom], function (v) {
+        // Update active users when client left.
+        _.remove(ACTIVE_USERS_IN_ROOM[curRoom], function (v) {
             return v === info.name;
         });
-        //Let others know a user left this room
+        // Let others know a user left this room
         socket.to(curRoom).emit('user_left', {
             userLeft: info.name,
-            activeUsersInRoom: activeUsersInRoom
+            activeUsersInRoom: ACTIVE_USERS_IN_ROOM
         });
     });
 
+    // On client disconnected.
     socket.on('disconnect', function () {
         console.log(socket.id + " disconnected");
-        // //Let others know a user left this room
-        var room = _.get(clients[socket.id], 'inRoom');
+        // Let others know a user left/disconnected this room
+        var room = _.get(CLIENTS[socket.id], 'inRoom');
         if (room) {
-            _.remove(activeUsersInRoom[room], function (v) {
-                return v === _.get(clients[socket.id], 'name');
+            _.remove(ACTIVE_USERS_IN_ROOM[room], function (v) {
+                return v === _.get(CLIENTS[socket.id], 'name');
             });
             socket.to(room).emit('user_left', {
-                userLeft: _.get(clients[socket.id], 'name'),
-                activeUsersInRoom: activeUsersInRoom
+                userLeft: _.get(CLIENTS[socket.id], 'name'),
+                activeUsersInRoom: ACTIVE_USERS_IN_ROOM
             });
         }
-        delete clients[socket.id];
-        console.log(clients);
+        delete CLIENTS[socket.id];
+        console.log(CLIENTS);
     });
 
+    // On client emit a message, broadcast to clients connected in the same room.
     socket.on('chat_message', function (info) {
-        console.log('incoming message from: ' + info.userName);
-        console.log( _.get(clients[socket.id], 'inRoom'));
-        console.log(info.roomId);
         var room = info.roomId;
-
-        console.log("emitting to room: " + room);
         socket.to(room).emit('chat_message', info);
-        console.log(clients);
     });
 
+    // On new user login.
     socket.on('new_user', function(info) {
-        if (clients[socket.id]) {
-            clients[socket.id].name = info.name;
+        if (CLIENTS[socket.id]) {
+            CLIENTS[socket.id].name = info.name;
         }
-        console.log(clients);
         socket.emit('new_user', info.name);
     });
 };

@@ -3,9 +3,7 @@ var app = express();
 var http_serv = require("http").Server(app);
 var io = require("socket.io")(http_serv);
 var bodyParser = require('body-parser');
-var path = require('path');
 var port = process.env.PORT || 8000;
-// Load the full build.
 var _ = require('lodash');
 
 var index = require("./app/js/index.js");
