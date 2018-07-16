@@ -2,14 +2,14 @@
 ## Hi  
 
 ## Getting started
-This is a simple chat application provides users to login and chat across the rooms. For sake of easy access i deployed the app in heroku.
+This is a simple chat application, which provides the ability for the users to login and chat in the available rooms/channels. For sake of easy access i deployed the app in heroku.
 Here is the link for it https://piscine-fromage-68806.herokuapp.com/ .
 Please email me kotu.js@gmail.com in case you do not see the link working. I will try to fix it ASAP.
 
 ### 1. Installing minimum deps
 Internet connection :)
 
-Please clone the repo `git@github.com:vkotu/Frontend-DD-Project-master.git`, go in to the directory the repo is cloned.
+Please clone the repo `git@gitlab.com:vkotu/Frontend-DD-Project-master.git`, go in to the directory the repo is cloned.
 
 Make sure you have `node` installed, with a version greater than `7.0.0`. I highly recommend [`nvm`](https://github.com/creationix/nvm), or just installing the latest version of `node` with `brew install node` on macOS.
 
