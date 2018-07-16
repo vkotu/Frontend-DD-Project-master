@@ -50,6 +50,12 @@ SOCKET_IO_HANDLER = (function socketioHandler () {
             return;
         });
 
+        socket.on('disconnect', function() {
+            console.log('Ah Got disconnect!');
+            alert("Sorry you got diconnected!");
+            location.reload();
+         });
+
         listenForNewRoom();
     }
 

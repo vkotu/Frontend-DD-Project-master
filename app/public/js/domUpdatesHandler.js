@@ -63,6 +63,8 @@ var domUpdatesHandler = (function domUpdateHandler () {
         if(!AVAILABLE_ROOMS.length) {
             return;
         }
+        // reset before
+        $("#rooms-list").text("");
         
         AVAILABLE_ROOMS.forEach(room => {
             addRoomToList(room);
